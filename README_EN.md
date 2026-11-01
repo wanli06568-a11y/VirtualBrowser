@@ -1,99 +1,98 @@
 <p align="center">
-  <img src="assets/logo.png">
+  <img src="assets/logo.png" alt="VirtualBrowser" width="120">
 </p>
 
-## <p align="center"><b><a href="README.md">简体中文</a> | <a href="README_EN.md">English</a></b></p>
+<p align="center"><b><a href="README.md">简体中文</a> | <a href="README_EN.md">English</a></b></p>
 
-# Introduction
+# VirtualBrowser
 
-Browser fingerprinting refers to the process of identifying and recording various factors, such as the browser itself, the operating system, and hardware configurations, to generate a unique identifier. It is a digital signature obtained through the collection of various features of the browser, such as user agent, language, screen size, plugin version, font, time settings, etc., and a comprehensive analysis. As everyone's browser configurations differ, browser fingerprints can be used to track user behavior, identify identity, monitor online activities, and even for illegal purposes such as fraud and phishing.
+VirtualBrowser is a fingerprint browser built on [Chromium](https://www.chromium.org/). It supports Windows, macOS, and Linux and lets you create and manage multiple isolated browser profiles on a single machine.
 
-VirtualBrowser is a fingerprint browser based on [Chromium](https://dev.chromium.org), which supports Windows 10 and above operating systems, and plans to support Mac, Android, Linux, and other operating systems in the future.
+**Browser fingerprinting** collects signals from the browser, OS, and hardware (User-Agent, language, resolution, fonts, Canvas/WebGL noise, and more) to build a digital signature that can identify or link users. VirtualBrowser helps you isolate fingerprints per profile and reduce cross-account correlation and tracking—when used lawfully and responsibly.
 
-Compared with Chromium, VirtualBrowser has two advantages:
+## Features
 
-1. Support for creating multiple fingerprint information browser environments on one machine.
-2. Support for managing multiple browser environments.
+- **Multi-profile isolation**: Run many independent fingerprint environments on one machine
+- **Centralized management**: Create, launch, edit, and remove environments from one place
+- **Broad fingerprint coverage**: UA, proxy, language/timezone, WebRTC, geolocation, Canvas/WebGL, AudioContext, and more (see table below)
+- **Automation-ready**: Works with Playwright and other Chromium automation tools; see [automation](automation/)
 
-# Preparation
+## Quick Start
 
-First, download the latest VirtualBrowser installation package from the [release page]() or [official website](http://virtualbrowser.cc) and install it on your computer.
+### Install
 
-## Creating a new browser environment
+Download the latest build from [Releases](https://github.com/Virtual-Browser/VirtualBrowser/releases) or the official site: [virtualbrowser.cc](https://virtualbrowser.cc) · [vbbrowser.com](https://www.vbbrowser.com/)
 
-1. Open VirtualBrowser and select Create Browser.
-   ![Image text](https://github.com/Virtual-Browser/VirtualBrowser/blob/main/assets/welcome.png)
-2. Modify the configuration information in the pop-up dialog or use the default settings.
-   ![Image text](https://github.com/Virtual-Browser/VirtualBrowser/blob/main/assets/create.png)
-   ![Image text](https://github.com/Virtual-Browser/VirtualBrowser/blob/main/assets/createsuccess.png)
+### Create a profile
 
-## Starting the browser environment
+1. Open VirtualBrowser and click **Create Browser**
+   ![Welcome](assets/welcome.png)
+2. Adjust settings in the dialog or keep the defaults
+   ![Create profile](assets/create.png)
+   ![Profile created](assets/createsuccess.png)
 
-1. Click the Start button in the created environment to open the newly created browser environment.
-2. The newly started browser is the new fingerprint environment.
-   ![Image text](https://github.com/Virtual-Browser/VirtualBrowser/blob/main/assets/launch.png)
+### Launch a profile
 
-# Tested and Effective Fingerprint Modifications
+1. Click **Start** on the profile you created
+2. The new window runs with that profile’s isolated fingerprint
 
-You can test fingerprint modifications using [fingerprintjs](https://fingerprintjs.github.io/fingerprintjs/) and [browserleaks](https://browserleaks.com/).
+![Launch browser](assets/launch.png)
 
-- Operating System: Modify the operating system part in `userAgent`.
-- Browser version: Modify the browser version in `userAgent`.
-- Proxy settings: Modify the browser proxy which supports "Default", "Do not use proxy", "Custom".
-- User Agent: Modify `userAgent`.
-- Language: Modify `navigator.language`, `navigator.languages`, and it can be automatically matched based on IP.
-- Time zone: Modify the time zone in `new Date()`, and it can be automatically matched based on IP.
-- WebRTC
-- Geolocation: Modify the latitude and longitude in `navigator.geolocation.getCurrentPosition()`, and it can be automatically matched based on IP.
-- Resolution: Modify `screen.width`/`screen.height`.
-- Font: Randomly modify the supported font list.
-- Canvas: Randomly modify Canvas 2D drawing differential pixels.
-- WebGL image: Randomly modify WebGL drawing differential pixels.
-- WebGL metadata: WebGL vendor, WebGL rendering, etc.
-- AudioContext: Randomly modify the differential data of `getChannelData` and `getFloatFrequencyData` in AudioContext.
-- ClientRects
-- Speech voices
-- CPU: Modify `navigator.hardwareConcurrency` CPU core count.
-- Memory
-- Device name
-- MAC address
-- Do Not Track
-- SSL
-- Port scan protection
-- Hardware acceleration
+## Fingerprint capabilities
 
-# Automation
+Verify changes with [FingerprintJS](https://fingerprintjs.github.io/fingerprintjs/) and [BrowserLeaks](https://browserleaks.com/).
 
-VirtualBrowser is base on Chromium, you can use playwright or other tools.
-demo(https://github.com/Virtual-Browser/VirtualBrowser/tree/main/automation)
+| Category                                                          | Description                                                           |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------- |
+| OS / browser version                                              | Edit the corresponding fields in `userAgent`                          |
+| Proxy                                                             | Default, no proxy, or custom                                          |
+| Language                                                          | `navigator.language` / `navigator.languages`; optional IP-based match |
+| Timezone                                                          | `Date` timezone; optional IP-based match                              |
+| WebRTC                                                            | Leak-related settings                                                 |
+| Geolocation                                                       | `navigator.geolocation`; optional IP-based match                      |
+| Resolution                                                        | `screen.width` / `screen.height`                                      |
+| Fonts                                                             | Randomize the available font list                                     |
+| Canvas / WebGL                                                    | Drawing noise for 2D and WebGL                                        |
+| WebGL metadata                                                    | Vendor, renderer, etc.                                                |
+| AudioContext                                                      | Noise on `getChannelData` / `getFloatFrequencyData`                   |
+| ClientRects / Speech Voices                                       | Related API hardening                                                 |
+| CPU / memory                                                      | e.g. `hardwareConcurrency`                                            |
+| Device name / MAC                                                 | Device identifier fields                                              |
+| Do Not Track / SSL / port-scan protection / hardware acceleration | Additional privacy and network options                                |
 
-# Support and Joining
+## Automation
 
-VirtualBrowser is not perfect yet. If you are interested in VirtualBrowser, you are welcome to join us through the following ways:
+Because VirtualBrowser is Chromium-based, you can use [Playwright](https://playwright.dev/) or other Chromium automation stacks. Sample code and setup notes live in the [automation](automation/) folder.
 
-1. Directly contribute code, provide features, and fix bugs.
-2. Install VirtualBrowser, visit your frequently used websites, and provide feedback on unusable situations to help solve compatibility issues.
-3. Provide experience, functional suggestions to help improve VirtualBrowser.
+## Support and contribute
 
-# Disclaimer
+The project is still evolving. You can help by:
 
-The purpose of this disclaimer is to explicitly clarify that the VirtualBrowser project is for technology exchange, learning, and research purposes and that the technology of this project should not be used for any illicit purposes or destructive behaviors. The author is not responsible for any damage caused to others or systems by the use of this project.
-When using this project, you must be clear and promise not to utilize this technology to carry out illegal activities, infringe upon the rights of others, or attack systems. Any accidents, losses, or damages resulting from the use of the technologies in this project, including but not limited to data loss, property loss, legal liabilities, etc., are not related to the author of this project.
-The technical information provided in this text is for learning and reference purposes only and does not constitute any form of warranty or guarantee. The author of this project makes no representations or warranties as to the accuracy, validity, or applicability of the technology.
+1. **Code**: Open PRs for bug fixes, features, or docs
+2. **Compatibility**: Install, visit your usual sites, and report what breaks
+3. **Feedback**: Share ideas to improve UX and functionality
+4. **Spread the word**: Post about your experience on social media
+5. **Community**: Join discussions with users and developers (see Contact below)
 
-# Contact Us
+## Disclaimer
+
+VirtualBrowser is provided for technical exchange, learning, and research only. Do not use this project for illegal purposes or harmful activity. The authors are not liable for damage to others or systems caused by use of this software.
+
+By using this project, you agree not to use its technology for unlawful acts, rights violations, or system attacks. Any accidents, losses, or damages (including data loss, property loss, or legal liability) from using this technology are not the responsibility of the project authors.
+
+The information here is for learning and reference only and is not a warranty of any kind. The authors make no claims about accuracy, fitness, or applicability.
+
+## Contact
 
 - Email: [virtual.browser.2020@gmail.com](mailto:virtual.browser.2020@gmail.com)
-- Official website: [http://virtualbrowser.cc](http://virtualbrowser.cc)
-- QQ Group: `564142956`
+- Website: [virtualbrowser.cc](https://virtualbrowser.cc) · [vbbrowser.com](https://www.vbbrowser.com/)
+- QQ group: `564142956`
 
-![Join QQ Group](assets/VirtualBrowser-qq-group.png)
-Wechat Group:
-![Join Wechat Group](assets/WeChat.png)
+![QQ group](assets/VirtualBrowser-qq-group.png)
 
-# Acknowledgments
+## Acknowledgments
 
-1. [fingerprintjs](https://fingerprintjs.github.io/fingerprintjs/)
-2. [browserleaks](https://browserleaks.com/)
-3. [Chromium](https://dev.chromium.org)
-4. [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+- [FingerprintJS](https://fingerprintjs.github.io/fingerprintjs/)
+- [BrowserLeaks](https://browserleaks.com/)
+- [Chromium](https://www.chromium.org/)
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
